@@ -1,7 +1,7 @@
 extends Spatial
 
 	
-var look_sensitivity = 1.0
+var look_sensitivity = 0.5
 var min_look_angle = -20.0
 var max_look_angle = 75.0
 

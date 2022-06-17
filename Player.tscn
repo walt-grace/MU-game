@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Models/Sword.dae" type="PackedScene" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://CameraOrbit.gd" type="Script" id=3]
+[ext_resource path="res://Font/UI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Font/UI.gd" type="Script" id=5]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -12,6 +14,38 @@ albedo_color = Color( 0.917647, 0.529412, 0.529412, 1 )
 
 [sub_resource type="CapsuleShape" id=3]
 radius = 0.5
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "attack"
+length = 0.7
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.166667, 0.433333, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 20, 0, -20 ), Vector3( 0, 0, 0 ) ]
+}
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 2 )
@@ -39,7 +73,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 1, 0.035 )
 [node name="Sword" parent="WeaponHolder" instance=ExtResource( 1 )]
 transform = Transform( -4.63629e-09, 4.63629e-09, 0.15, 0.106066, 0.106066, 0, -0.106066, 0.106066, -6.55671e-09, 0, 0, 0 )
 
+[node name="SwordAnimator" type="AnimationPlayer" parent="WeaponHolder"]
+anims/RESET = SubResource( 4 )
+anims/attack = SubResource( 5 )
+
 [node name="AttackRayCast" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1, 0.6 )
 enabled = true
 cast_to = Vector3( 0, 0, 1.5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource( 4 )]
+script = ExtResource( 5 )
